@@ -108,17 +108,12 @@ namespace SwizzleGenerator
             };
             StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine(File.ReadAllText("../../../HEADER"));
+            sb.AppendLine();
+
             sb.AppendLine("using UnityEngine;");
             sb.AppendLine();
 
-            sb.AppendLine("// This code is generated");
-            sb.AppendLine("// The goal is to provide shortcuts for accessing vector components like in shader languages (feature called swizzle).");
-            sb.AppendLine("// This makes possible to use a vector this way :");
-            sb.AppendLine("// Vector3 v; v.xzxz();");
-            sb.AppendLine("// Vector2 v; v.yyyy();");
-            sb.AppendLine("// Vector4 v; v.ww();");
-            sb.AppendLine("// ...");
-            sb.AppendLine();
 
             sb.AppendLine("namespace UnitySwizzle");
             sb.AppendLine("{");

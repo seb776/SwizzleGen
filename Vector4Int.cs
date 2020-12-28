@@ -1,8 +1,27 @@
-﻿using System;
+﻿/*
+**	UnitySwizzle is a set of extensions methods that allows using the "swizzle" feature with unity types.
+**  Copyright (C) 2020  z0rg - Sebastien Maire
+**
+**  This program is free software: you can redistribute it and/or modify
+**  it under the terms of the GNU General Public License as published by
+**  the Free Software Foundation, either version 3 of the License, or
+**  (at your option) any later version.
+**
+**  This program is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+**
+**  You should have received a copy of the GNU General Public License
+**  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
-namespace UnityEngine
+namespace UnitySwizzle
 {
     [System.Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -127,36 +146,36 @@ namespace UnityEngine
         //
         // Summary:
         //     Shorthand for writing Vector4Int (0, -1, 0, 0).
-        public static Vector4Int down => _down;
+        public static Vector4Int down { get { return _down; } }
         //
         // Summary:
         //     Shorthand for writing Vector4Int (0, 1, 0, 0).
-        public static Vector4Int up => _up;
+        public static Vector4Int up { get { return _up; } }
         //
         // Summary:
         //     Shorthand for writing Vector4Int (1, 1, 1, 1).
-        public static Vector4Int one => _one;
+        public static Vector4Int one { get { return _one; } }
         //
         // Summary:
         //     Shorthand for writing Vector4Int (0, 0, 0, 0).
-        public static Vector4Int zero => _zero;
+        public static Vector4Int zero { get { return _zero; } }
         //
         // Summary:
         //     Shorthand for writing Vector4Int (-1, 0, 0, 0).
-        public static Vector4Int left => _left;
+        public static Vector4Int left { get { return _left; } }
         //
         // Summary:
         //     Shorthand for writing Vector4Int (1, 0, 0, 0).
-        public static Vector4Int right => _right;
+        public static Vector4Int right { get { return _right; } }
         //
         // Summary:
         //     Returns the length of this vector (Read Only).
-        public float magnitude => Distance(Vector4Int.zero, this);
+        public float magnitude { get { return Distance(Vector4Int.zero, this); } }
 
         //
         // Summary:
         //     Returns the squared length of this vector (Read Only).
-        public int sqrMagnitude => x * x + y * y + z * z + w * w;
+        public int sqrMagnitude { get { return x * x + y * y + z * z + w * w; } }
 
         //
         // Summary:
