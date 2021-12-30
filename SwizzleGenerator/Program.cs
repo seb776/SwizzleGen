@@ -70,41 +70,43 @@ namespace SwizzleGenerator
             VectorData[] vectors = new VectorData[] {
                 // Float ==========================================
                 // XYZW
-                new VectorData("Vector2", "Vector{0}",4, "float", "xy", "xy", true),
-                new VectorData("Vector3", "Vector{0}",4, "float",  "xyz","xyz", true),
-                new VectorData("Vector4", "Vector{0}",4, "float",  "xyzw", "xyzw",true),
+                new VectorData("vec2", "vec{0}",4, "float", "xy", "xy", true),
+                new VectorData("vec2", "vec{0}",4, "float",  "rg", "xy"),
+                new VectorData("vec2", "vec{0}",4, "float",  "st", "xy"),
+
+                new VectorData("vec3", "vec{0}",4, "float",  "xyz","xyz", true),
+                new VectorData("vec3", "vec{0}",4, "float",  "rgb", "xyz"),
+                new VectorData("vec3", "vec{0}",4, "float",  "stp", "xyz"),
+
+                new VectorData("vec4", "vec{0}",4, "float",  "xyzw", "xyzw",true),
+                new VectorData("vec4", "vec{0}",4, "float",  "rgba", "xyzw"),
+                new VectorData("vec4", "vec{0}",4, "float",  "stpq", "xyzw"),
                 // RGBA
-                new VectorData("Vector2", "Vector{0}",4, "float",  "rg", "xy"),
-                new VectorData("Vector3", "Vector{0}",4, "float",  "rgb", "xyz"),
-                new VectorData("Vector4", "Vector{0}",4, "float",  "rgba", "xyzw"),
                 // STPQ
-                new VectorData("Vector2", "Vector{0}",4, "float",  "st", "xy"),
-                new VectorData("Vector3", "Vector{0}",4, "float",  "stp", "xyz"),
-                new VectorData("Vector4", "Vector{0}",4, "float",  "stpq", "xyzw"),
 
-                // Int ==========================================
-                // XYZW
-                new VectorData("Vector2Int", "Vector{0}Int",4, "int",  "xy", "xy", true),
-                new VectorData("Vector3Int", "Vector{0}Int",4, "int",  "xyz", "xyz", true),
-                new VectorData("Vector4Int", "Vector{0}Int",4, "int",  "xyzw", "xyzw"),
-                // RGBA
-                new VectorData("Vector2Int", "Vector{0}Int",4, "int", "rg", "xy"),
-                new VectorData("Vector3Int", "Vector{0}Int",4, "int", "rgb", "xyz"),
-                new VectorData("Vector4Int", "Vector{0}Int",4, "int", "rgba", "xyzw"),
-                // STPQ
-                new VectorData("Vector2Int", "Vector{0}Int",4, "int", "st", "xy"),
-                new VectorData("Vector3Int", "Vector{0}Int",4, "int", "stp", "xyz"),
-                new VectorData("Vector4Int", "Vector{0}Int",4, "int", "stpq", "xyzw"),
+                //// Int ==========================================
+                //// XYZW
+                //new VectorData("vector2Int", "Vector{0}Int",4, "int",  "xy", "xy", true),
+                //new VectorData("vector3Int", "Vector{0}Int",4, "int",  "xyz", "xyz", true),
+                //new VectorData("vector4Int", "Vector{0}Int",4, "int",  "xyzw", "xyzw"),
+                //// RGBA
+                //new VectorData("vector2Int", "Vector{0}Int",4, "int", "rg", "xy"),
+                //new VectorData("vector3Int", "Vector{0}Int",4, "int", "rgb", "xyz"),
+                //new VectorData("vector4Int", "Vector{0}Int",4, "int", "rgba", "xyzw"),
+                //// STPQ
+                //new VectorData("vector2Int", "Vector{0}Int",4, "int", "st", "xy"),
+                //new VectorData("vector3Int", "Vector{0}Int",4, "int", "stp", "xyz"),
+                //new VectorData("vector4Int", "Vector{0}Int",4, "int", "stpq", "xyzw"),
 
-                // Color ==========================================
-                new VectorData("Color", "Vector{0}",4, "float", "xyzw", "rgba"),
-                new VectorData("Color", "Vector{0}",4, "float", "rgba", "rgba"),
-                new VectorData("Color", "Vector{0}",4, "float", "stpq", "rgba"),
+                //// Color ==========================================
+                //new VectorData("Color", "Vector{0}",4, "float", "xyzw", "rgba"),
+                //new VectorData("Color", "Vector{0}",4, "float", "rgba", "rgba"),
+                //new VectorData("Color", "Vector{0}",4, "float", "stpq", "rgba"),
 
-                // Color32 ==========================================
-                new VectorData("Color32", "Vector{0}Int",4, "byte",  "xyzw",  "rgba"),
-                new VectorData("Color32", "Vector{0}Int",4, "byte",  "rgba",  "rgba"),
-                new VectorData("Color32", "Vector{0}Int",4, "byte",  "stpq",  "rgba"),
+                //// Color32 ==========================================
+                //new VectorData("Color32", "Vector{0}Int",4, "byte",  "xyzw",  "rgba"),
+                //new VectorData("Color32", "Vector{0}Int",4, "byte",  "rgba",  "rgba"),
+                //new VectorData("Color32", "Vector{0}Int",4, "byte",  "stpq",  "rgba"),
             };
             StringBuilder sb = new StringBuilder();
 
@@ -119,7 +121,7 @@ namespace SwizzleGenerator
             sb.AppendLine("{");
             foreach (var vectorData in vectors)
             {
-                sb.AppendLine($"\tpublic static class {vectorData.Name + vectorData.SwizzleChars + SUFFIX}");
+                sb.AppendLine($"\tpublic class {vectorData.Name + vectorData.SwizzleChars + SUFFIX}");
                 sb.AppendLine("\t{");
                 for (int i = 1; i < (vectorData.MaxOut + 1); ++i)
                 {
@@ -138,16 +140,16 @@ namespace SwizzleGenerator
                             var swizzleChar = vectorData.SwizzleChars[permuts[j]];
                             swizzleStr += swizzleChar;
                             var accessSwizzle = vectorData.ExistingAccessor[permuts[j]];
-                            swizzleAccess += $"v.{accessSwizzle}";
+                            swizzleAccess += $"_innerVec.{accessSwizzle}";
                             
                             try
                             {
 
-                                swizzleSet += $"v.{accessSwizzle} = ";
+                                swizzleSet += $"_innerVec.{accessSwizzle} = ";
                                 if (i == 1)
-                                    swizzleSet += "other;";
+                                    swizzleSet += "value;";
                                 else
-                                    swizzleSet += $"({vectorData.DefaultTypeName})other.{vectorData.ExistingAccessor[j]}();";
+                                    swizzleSet += $"({vectorData.DefaultTypeName})value.{vectorData.ExistingAccessor[j]};";
                             }
                             catch (Exception _) { }
                             //if (!vectorData.IsDefaultAvailable)
@@ -166,10 +168,13 @@ namespace SwizzleGenerator
                             returnName = vectorData.DefaultTypeName;
                         }
 
-                        sb.AppendLine($"\t\tpublic static {returnName} {swizzleStr}(this {vectorData.Name} v) {{ return {ctr}; }}");
-
+                        sb.AppendLine($"\t\tpublic {returnName} {swizzleStr}");
+                        sb.AppendLine($"\t\t{{");
+                        sb.AppendLine($"\t\t\tget {{ return {ctr}; }}");
                         if (NoDuplicatedChar(swizzleStr))
-                            sb.AppendLine($"\t\tpublic static {returnName} {swizzleStr}(this {vectorData.Name} v, {returnName} other) {{ {swizzleSet} return v.{swizzleStr}(); }}");
+                            sb.AppendLine($"\t\t\tset {{ {swizzleSet} }}");
+                        sb.AppendLine($"\t\t}}");
+
 
                         checkNext = NextPermutation(permuts, vectorData.SwizzleChars.Length - 1);
                     }
